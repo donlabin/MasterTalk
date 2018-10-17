@@ -1,0 +1,22 @@
+#載入需要的函數
+from scraping import yahooStockHot
+from order import StockOrder
+
+#以下變數分別:券商 買賣別 數量 一般 現貨
+Broker='Capital'
+BS='Buy'
+Qty='1'
+APCode='0'
+OrderType='0'
+
+#取得雅虎熱門排行榜資料一筆
+screenstock = yahooStockHot('vol',1)
+screenstock = screenstock[0]
+
+#取得股票代號
+stockID=screenstock[0]
+#取得收盤價做為委託價
+Price=screenstock[1]
+
+#進行下單
+StockOrder(Broker, stockID, BS, Price, Qty, APCode, OrderType)
