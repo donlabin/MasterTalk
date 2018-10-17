@@ -1,0 +1,23 @@
+#載入套件
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+
+# t參數 熱門:vol 漲幅:up 跌幅:down 價差:pdis 成交價:pri 成交值:amt
+# n參數 回傳幾筆的意思 最大值100
+def yahooStockHot(t,n):
+    target="https://tw.stock.yahoo.com/d/i/rank.php?t="+t+"&e=tse&n=100"
+    html_doc=urlopen(target)
+    soup=BeautifulSoup(html_doc,'html.parser')
+    tmplist=[]
+    for i in soup.find_all('td',class_='name'):
+        tmplist+=[[i.string[0:4],i.find_next_sibling().get_text()]]
+    return tmplist[:n]
+
+def getStockLastPrice(sid):
+    target="https://tw.stock.yahoo.com/q/q?s="+sid
+    html_doc=urlopen(target)
+    soup=BeautifulSoup(html_doc,'html.parser')    
+    try:
+        return float(soup.find('table',border='2').find_all('td')[7].get_text())
+    except:
+        return False
