@@ -1,0 +1,15 @@
+#載入套件
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+
+#擷取網頁
+#https://tw.stock.yahoo.com/d/i/rank.php?t=vol&e=tse
+html_doc=urlopen('https://tw.stock.yahoo.com/d/i/rank.php?t=vol&e=tse')
+
+#進行分析
+soup=BeautifulSoup(html_doc,'html.parser')
+#soup.find('td',class_='name')
+
+for i in soup.find_all('td',class_='name'):
+    print(i.string[0:4])
+    print(i.find_next_sibling().get_text())
