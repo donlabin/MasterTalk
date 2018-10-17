@@ -1,0 +1,36 @@
+# -*- coding: UTF-8 -*-
+#載入相關套件
+import subprocess
+import time
+import sys
+
+#下單子程式放置位置
+ExecPath="C:/OrderCMDStock/"
+
+#取得股票帳務		
+def StockGetAllAccount(Broker, orderID):
+	ReturnInfo = subprocess.check_output([ExecPath+"GetAccount.exe", Broker, orderID],shell=True).decode('big5')
+	return ReturnInfo
+
+#取得成交股票帳務		
+def StockGetMatchAccount(Broker, orderID):
+	ReturnInfo = subprocess.check_output([ExecPath+"MatchAccount.exe", Broker, orderID],shell=True).decode('big5')
+	return ReturnInfo	
+
+#取得庫存回報		
+def StockGetInAccount(Broker):
+	ReturnInfo = subprocess.check_output([ExecPath+"GetInStock.exe", Broker],shell=True).decode('big5')
+	return ReturnInfo
+
+#股票下單
+def StockOrder(Broker, stockID, BS, Price, Qty, APCode, OrderType):
+	ReturnInfo = subprocess.check_output([ExecPath+"Order.exe", Broker, stockID, BS, Price, Qty, APCode, OrderType],shell=True).decode('utf-8')
+	return ReturnInfo
+	
+#股票取消
+def StockCancel(Broker, orderID):
+	ReturnInfo = subprocess.check_output([ExecPath+"Order.exe", Broker, "Delete",orderID],shell=True).decode('utf-8')
+	return ReturnInfo
+	
+
+	
