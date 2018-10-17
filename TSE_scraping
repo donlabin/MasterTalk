@@ -1,0 +1,15 @@
+#載入套件
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+
+#擷取網頁
+#http://www.twse.com.tw/zh/listed/listingProfileInquiry?mobile=&selectItem=3&selectSubitem=0
+html_doc=urlopen('http://www.twse.com.tw/zh/listed/listingProfileInquiry?mobile=&selectItem=3&selectSubitem=0')
+
+#進行分析
+soup=BeautifulSoup(html_doc,'html.parser')
+
+#soup.table.tbody.find('tr')
+for i in soup.table.tbody.find_all('tr'):
+    print(i.td.get_text())
+    
