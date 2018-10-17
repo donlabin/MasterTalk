@@ -1,0 +1,88 @@
+#載入beautufulsoup套件
+from bs4 import BeautifulSoup
+
+#範例的網頁字串
+html_doc="""
+<html><head><title>jack’s story</title></head>
+<body>
+<p class="title"><b>The jack’s story</b></p>
+<p class="story">這個網站，目前有三個測試連結
+<a href="http://haohaninfo.com/product_microplay.html" class="linktype" id="link1">MP</a>,
+<a href="http://haohaninfo.com/product_microtest.html" class="linktype" id="link2">MT</a> and
+<a href="http://haohaninfo.com/product_FastOS.html" class="linktype" id="link3">FOS</a>;
+</p>
+<table>
+<tr><td>123</td><td>456</td><td>789</td></tr>
+<tr><td>234</td><td>567</td><td>890</td></tr>
+</table>
+<p class="story">...</p>
+</body>
+</html>
+"""
+
+
+
+#將html格式改為beautifulsoup
+soup=BeautifulSoup(html_doc)
+
+#查看html_doc變數的型態
+type(html_doc)
+
+#查看soup變數的型態
+type(soup)
+
+#查看網頁階層
+print(soup.prettify())
+
+#呼叫指定的標籤
+soup.title
+soup.p
+
+#顯示指定標籤的屬性
+soup.p['class']
+soup.p.get('class')
+
+#顯示指定標籤名稱
+soup.title.name
+
+#顯示指定標籤內容
+soup.p.string
+soup.p.contents
+soup.p.get_text()
+
+#contents 與 string不同之處 
+type(soup.p.string)
+type(soup.p.contents)
+
+#找尋特定的標籤
+soup.find_all('a')
+soup.find_all('a',id="link2")
+soup.find_all('a',text='FOS')
+soup.find_all('a',limit=2)
+
+#逐筆將所有標籤顯示出來
+for i in soup.find_all('a'):
+    print(i)
+for i in soup.find_all('a'):
+    print(i.get('href'))
+
+#取得單一父標籤
+soup.title.parent
+
+#取得所有父標籤
+soup.title.parents
+for i in soup.title.parents:
+    print(i)
+for i in soup.title.find_parents():
+    print(i)
+    
+#取得所有子標籤
+soup.table.children
+for i in soup.table.children:
+    print(i)
+    
+#顯示網頁完整內容
+soup.html
+
+#取得所有有關的標籤的值
+soup.get_text('p')
