@@ -1,1 +1,37 @@
+#載入需要的函數
+from order import StockOrder
+from function import getSIDMatch
+import time,datetime
 
+#取得當天的日期字串
+today=time.strftime('%Y%m%d',time.localtime(time.time()))
+
+#進出場時間設定
+OrderTime=datetime.datetime.strptime("09:10:00.00","%H:%M:%S.%f")
+CoverTime=datetime.datetime.strptime("12:00:00.00","%H:%M:%S.%f")
+
+#以下變數分別:指定商品代號 券商 數量 一般 現貨
+StockID='2330'
+Broker='Capital'
+Qty='1'
+APCode='0'
+# 無券當沖賣需要改成 3
+# OrderType='0'
+
+#進場判斷
+for i in getSIDMatch(today,StockID):
+    MatchData=i
+    MatchTime=datetime.datetime.strptime(MatchData[0],"%H:%M:%S.%f")
+    if MatchTime > OrderTime:
+        MatchBuyPrice=float(MatchData[6])
+        StockOrder(Broker, StockID, 'Buy', MatchBuyPrice, Qty, APCode, '0')
+        break
+
+#出場判斷
+for i in getSIDMatch(today,StockID):
+    MatchData=i
+    MatchTime=datetime.datetime.strptime(MatchData[0],"%H:%M:%S.%f")
+    if MatchTime > CoverTime:
+        MatchSellPrice=float(MatchData[5])
+        StockOrder(Broker, StockID, 'Sell', MatchSellPrice, Qty, APCode, '3')
+        break
